@@ -96,7 +96,7 @@ local DiscordEmbed = discord.DiscordEmbed
 
 local hook = DiscordWebhook.new("https://discord.com/api/webhooks/your_webhook_id/your_webhook_token") -- change with ur webhook url ("webhook_url")
 
-hook:set_username("TestBot")
+hook:set_username("Loscope")
 hook:set_content("ALUHAKBAR, idk what to say, hello i guess? now you can rat people and send their shit here👌 i will add a way to upload files in the api no need to worry, rats will be a thing soon on assembly, i think?")
 hook:set_avatar_url("https://cdn.discordapp.com/avatars/952904684660744212/43ce743942c0228d0075fb4a090eed0f.png?size=1024") -- avatar url nigga
 hook.tts = true
