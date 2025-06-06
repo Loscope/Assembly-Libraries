@@ -1,0 +1,151 @@
+First of all :middle_finger:.
+Ok, this is a library where you can send messages to a webhook easily.
+**TUTORIAL ON HOW TO LOAD LIBRARIES ON ASSEMBLY**
+You need to start every script with ```package.path = package.path .. ";C:\\assembly\\libs\\?.lua"``` it will "override" the libraries folder and set it to C:/assembly/libs, if you dont have a folder there (wich you dont have) create one with the name "libs", to load a library you need to use require("name of the lib"), in this case its discord lib so the code will look like this: ```package.path = package.path .. ";C:\\assembly\\libs\\?.lua"
+local discord = require("discord")```
+then just use the lib normaly as designed by someone who made it.
+**NOW THE DISCORD LIBRARY **
+**Basic Usage**
+
+*Creating a Webhook*
+
+Create a DiscordWebhook instance with your Discord webhook URL:
+
+```local DiscordWebhook = discord.DiscordWebhook
+local hook = DiscordWebhook.new("https://discord.com/api/webhooks/your_webhook_id/your_webhook_token")```
+
+**Setting Webhook Properties**
+
+*Customize the webhook’s message:*
+
+```hook:set_username("MyBot")
+hook:set_avatar_url("https://example.com/avatar.png")
+hook:set_content("Hello, Discord!")
+hook.tts = true -- Enable text-to-speech
+hook.wait = true -- Wait for Discord’s response```
+
+**Creating an Embed**
+
+*Create a DiscordEmbed to add rich content:*
+
+```local DiscordEmbed = discord.DiscordEmbed
+local embed = DiscordEmbed.new()
+embed:set_title("My Embed")
+embed:set_description("This is a test embed.")
+embed:set_url("https://example.com")
+embed:set_color(0, 255, 0) -- Green (RGB)
+embed:add_field("Field 1", "Value 1", true) -- Inline
+embed:add_field("Field 2", "Value 2", false) -- Not inline```
+
+**Sending the Message**
+
+*Add the embed to the webhook and send the message:*
+
+```hook:add_embed(embed)
+hook:send(function(success, response)
+    if success then
+        print("Message sent successfully! Response: " .. (response or "No response"))
+    else
+        print("Failed to send message: " .. response)
+    end
+end)```
+
+**API Reference**
+
+***DiscordWebhook***
+
+**DiscordWebhook.new(url)**: Creates a new webhook instance.
+
+**set_username(name)**: Sets the webhook’s display name.
+
+**set_avatar_url(url)**: Sets the webhook’s avatar.
+
+**set_content(content)**: Sets the message content.
+
+**add_embed(embed)**: Adds a DiscordEmbed to the message.
+
+**send(callback)**: Sends the message to Discord. The callback receives (success, response).
+
+***DiscordEmbed***
+
+**DiscordEmbed.new()**: Creates a new embed.
+
+**set_title(title)**: Sets the embed title.
+
+**set_description(description)**: Sets the embed description.
+
+**set_url(url)**: Sets a clickable URL for the title.
+
+**set_color(r, g, b)**: Sets the embed color (RGB or decimal).
+
+**add_field(name, value, inline)**: Adds a field to the embed.
+
+Thats it, now a script that works as an example for someone that sees this test: ```package.path = package.path .. ";C:\\assembly\\libs\\?.lua" --this will be the default folder for assembly libraries
+
+-- this is to force reload the api, debugging purposes but whatever i dont want to remove it
+package.loaded["discord"] = nil
+
+local discord = require("discord")
+print("require('discord') returned: ", discord)
+if type(discord) ~= "table" then
+    error("Failed to load discord module: require returned " .. tostring(discord))
+end
+local DiscordWebhook = discord.DiscordWebhook
+local DiscordEmbed = discord.DiscordEmbed
+
+
+local hook = DiscordWebhook.new("https://discord.com/api/webhooks/your_webhook_id/your_webhook_token") -- change with ur webhook url ("webhook_url")
+
+hook:set_username("TestBot")
+hook:set_content("ALUHAKBAR, idk what to say, hello i guess? now you can rat people and send their shit here👌 i will add a way to upload files in the api no need to worry, rats will be a thing soon on assembly, i think?")
+hook:set_avatar_url("https://cdn.discordapp.com/avatars/952904684660744212/43ce743942c0228d0075fb4a090eed0f.png?size=1024") -- avatar url nigga
+hook.tts = true
+hook.wait = true
+
+-- create first embed to test DiscordEmbed functions
+local embed1 = DiscordEmbed.new()
+embed1:set_title("Github")
+embed1:set_description("This embed tests title, description, URL, and color.")
+embed1:set_url("https://github.com/Loscope/Assembly-Libraries/blob/main/discord.lua")
+embed1:set_color(0, 255, 0) -- weird shit i didnt converst ig, its green btw
+
+-- test adding fields (inline and non-inline)
+embed1:add_field("Field 1", "Hello", true)
+embed1:add_field("Field 2", "This was made by", true)
+embed1:add_field("Field 3", "Loscope", false)
+
+-- create second embed to test multiple embeds
+local embed2 = DiscordEmbed.new()
+embed2:set_title("Test Embed 2")
+embed2:set_description("This embed tests multiple embeds and additional fields.")
+embed2:set_color(255, 0, 0) -- Red in RGB, https://www.rapidtables.com/web/color/RGB_Color.html, you can search for colors there
+embed2:add_field("Status", "Testing", true)
+embed2:add_field("Progress", "100%", true)
+
+-- add both embeds to webhook
+hook:add_embed(embed1)
+hook:add_embed(embed2)
+
+local function testInvalidColor()
+    local success, err = pcall(function()
+        local embed3 = DiscordEmbed.new()
+        embed3:set_color(255, 0 ,0)
+    end)
+    if not success then
+        print("Caught expected error for invalid color: " .. err)
+    else
+        print("Error: Invalid color test did not raise an error!")
+    end
+end
+testInvalidColor()
+-- send the webhook
+hook:send(function(success, response)
+    if success then
+        print("Webhook sent successfully! Response: " .. (response or "No response body"))
+    else
+        print("Failed to send webhook: " .. response)
+    end
+end)```
+
+**IF ANYTIME IT ASKS YOU TO UPDATE THE LIB THE OFFICIAL GITHUB IS THIS ONE** "https://github.com/Loscope/Assembly-Libraries/tree/main", 
+**NOW YOU ARE FREE TO GO AND MAKE THE FIRST *RAT* FOR ASSEMBLY XD**
